@@ -1,6 +1,5 @@
 import argparse
 import binascii
-from textwrap import wrap
 
 
 def main():
