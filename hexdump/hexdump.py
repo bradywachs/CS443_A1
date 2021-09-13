@@ -12,8 +12,10 @@ def main():
     # try to open file
     try:
         with open(file, "rb") as f:
-            hex_file = binascii.hexlify(f)
-            print(hex_file)
+            for chunk in iter(lambda: f.read(16), b''):
+                hex_line = binascii.hexlify(chunk)
+                print(hex_line)
+    
     except Exception as ex:
         print(f"ERROR - Exception: {ex}")
 
