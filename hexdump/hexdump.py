@@ -17,20 +17,12 @@ def main():
         with open(file, "rb") as f:
             # iterate over every 16 byte chunk in file
             for chunk in iter(lambda: f.read(16), b''):
-                hex_line = binascii.hexlify(chunk)
-                hex_line = str(hex_line)
-                col2 = " ".join(hex_line[i:i+2] for i in range(0, len(hex_line), 2))    # column2 is the byte values in hex
-                col2 = f'{col2[:23]} {col2[23:]}'                                       # add extra space inbetween 8th and 9th byte
-                col2 = col2.lstrip("'b'")
-                col2 = col2.rstrip(" '")
+                # changing from binascii.hexlify to format as 02x had change on hash
+                col2 = " ".join([f'{i:02x}' for i in chunk])
+                col2 = f'{col2[0:23]} {col2[23:]}' 
 
-                col3 = ""
-                for i in chunk:
-                    # range of printable ascii characters [32,127] - range funct goes to stop - 1 value
-                    if i in range(32,128):
-                        col3 += chr(i)
-                    else:
-                        col3 += (".")
+                # using this join vs the larger if statement did not have impact on hash
+                col3 = "".join([chr(i) if 32 <= i <= 127 else "." for i in chunk])
 
                 # convert int to hex for offset
                 output = '{:08x}'.format(n*16)
