@@ -24,7 +24,6 @@ def main():
                 col2 = f'{col2[:23]} {col2[23:]}'                                       # add extra space inbetween 8th and 9th byte
                 col2 = col2.lstrip("'b'")
                 col2 = col2.rstrip(" '")
-                # print(col2)
 
                 col3 = ""
                 for i in chunk:
@@ -43,8 +42,10 @@ def main():
                 # increment int representation of offset
                 n += 1
 
-            n += 1
-            last_offset = '{:08x}'.format(n*16)
+            n -= 1
+            # get number of hex characters and / 2 to find number of bytes
+            num_bytes = int( len("".join(col2.split())) / 2 )
+            last_offset = '{:08x}'.format((n*16)+num_bytes)
             print(f'{last_offset}')
     
     except Exception as ex:
