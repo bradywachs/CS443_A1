@@ -22,6 +22,8 @@ def main():
                 hex_line = str(hex_line)
                 col2 = " ".join(hex_line[i:i+2] for i in range(0, len(hex_line), 2))    # column2 is the byte values in hex
                 col2 = f'{col2[:23]} {col2[23:]}'                                       # add extra space inbetween 8th and 9th byte
+                col2 = col2.lstrip("'b'")
+                col2 = col2.rstrip(" '")
                 # print(col2)
 
                 col3 = ""
@@ -32,11 +34,18 @@ def main():
                     else:
                         col3 += (".")
 
-                # test
-                print(f'{col2} |{col3}|')
+                # convert int to hex for offset
+                output = '{:08x}'.format(n*16)
+
+                # output
+                print(f'{output} {col2:<49}  |{col3}|')
 
                 # increment int representation of offset
                 n += 1
+
+            n += 1
+            last_offset = '{:08x}'.format(n*16)
+            print(f'{last_offset}')
     
     except Exception as ex:
         print(f"ERROR - Exception: {ex}")
