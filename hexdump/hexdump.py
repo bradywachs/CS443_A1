@@ -25,12 +25,16 @@ def main():
                 # print(col2)
 
                 col3 = ""
-                for i in hex_line:
+                for i in chunk:
                     # range of printable ascii characters [32,127] - range funct goes to stop - 1 value
                     if i in range(32,128):
-                        col3 = "".join(chr(i))
+                        col3 += chr(i)
                     else:
-                        col3 = "".join(".")
+                        col3 += (".")
+
+                # test
+                print(f'{col2} |{col3}|')
+
                 # increment int representation of offset
                 n += 1
     
