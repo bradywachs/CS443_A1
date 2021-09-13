@@ -1,4 +1,5 @@
 import argparse
+import binascii
 
 
 def main():
@@ -11,7 +12,7 @@ def main():
     # try to open file
     try:
         with open(file, "rb") as f:
-            hex_file = f.read().encode('hex')
+            hex_file = binascii.hexlify(f)
             print(hex_file)
     except Exception as ex:
         print(f"ERROR - Exception: {ex}")
