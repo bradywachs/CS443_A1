@@ -1,6 +1,15 @@
 import argparse 
 import binascii
+import codecs
  
+
+"""
+Idea for be vs le:
+- iterate over line 2 bytes at a time
+- when converting be to ASCII do so using x[0], x[1] as order for hex to ascii conversion
+- when using le - just reverse the order
+"""
+
 
 
 def print_file(file_obj):
@@ -10,19 +19,38 @@ def print_file(file_obj):
         print(line)
 
 
-def print_hex(file_obj):
+def print_utf16(file_obj):
     """for testing and troubleshooting
-    FIXME: not getting the expected output
+    *IMPORTANT: hexlify converts to 16-bit (2 byte, UTF-16) character type
+    using hexlify makes binary string double length of original data
     """
     total_len = 0
     for chunk in iter(lambda: file_obj.read(16), b''):
         hex_line = binascii.hexlify(chunk)
-        hex_line = str(hex_line)
-        print(len(hex_line))
+        # print(len(hex_line))
         total_len += len(hex_line)
-        # test
         print(hex_line)
-    print(f'Total Bytes: {total_len}')
+        # print(hex_line[:3])
+    print(f'Total UTF-16 Encodings: {total_len}\t|\tCorresponding to {total_len/2} bytes')
+
+
+def print_utf8(file_obj):
+    """for testing and troubleshooting
+    FIXME: not working the way I am expecting
+    FIXME: how to encode something (like hexlify) using utf-8 encoding"""
+    total_len = 0
+    for chunk in iter(lambda: file_obj.read(16), b''):
+        utf16_line = binascii.hexlify(chunk)
+
+        #FIXME: may need decode('utf-16be') -- compare output
+        ## this does have an impact on the output - would need to manually convert and see what to expect
+        utf8_line = utf16_line.decode('utf-16be').encode('utf-8')
+        
+        # print(len(utf8_line))
+        total_len += len(utf8_line)
+        print(utf8_line)
+        # print(utf8_line[:3])
+    print(f'Total UTF-8 Encodings (and Bytes): {total_len}')
 
 
 def print_strings(file_obj, encoding, min_len): 
@@ -31,10 +59,11 @@ def print_strings(file_obj, encoding, min_len):
     print(encoding) 
     print(min_len) 
     """
-    for chunk in iter(lambda: file_obj.read(16), b''):
-        hex_line = binascii.hexlify(chunk)
-        # hex_line = str(hex_line)
-        print(hex_line)
+    # for chunk in iter(lambda: file_obj.read(16), b''):
+    #     hex_line = binascii.hexlify(chunk)
+    #     # hex_line = str(hex_line)
+    #     print(hex_line)
+    print_utf8(file_obj)
 
  
 def main(): 
