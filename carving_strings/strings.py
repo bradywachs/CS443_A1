@@ -99,12 +99,35 @@ def decode_s(file_obj, min_len):
         line = line.hex()
         hex_line += line
     
+    long_enough = False
+    ascii_str = ""
     hex_iter = iter(hex_line)
     for x in hex_iter:
-        # test
         temp_byte = f'{x}{next(hex_iter)}'
-        print(temp_byte)
-        if
+        byte_int = int(temp_byte, 16)
+        # test
+        # print(f'hex: {temp_byte}\tint: {byte_int}')
+
+        # within printable ascii range
+        if 32 <= byte_int <= 126:
+            ascii = chr(byte_int)
+            print(ascii)
+            ascii_str += ascii
+            # test
+            # print(f'ascii: {ascii}')
+        
+        # not within printable ascii range
+        else:
+            if long_enough:
+                print(ascii_str)
+            # reset flag and str so for future strings
+            long_enough = False
+            ascii_str = ""
+
+        # if ascii string ends at EOF
+        if long_enough:
+            print(ascii_str)
+
 
 
 def print_strings(file_obj, encoding, min_len): 
