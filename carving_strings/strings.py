@@ -99,14 +99,12 @@ def decode_s(file_obj, min_len):
         line = line.hex()
         hex_line += line
     
-    # test
-    print(hex_line)
-    print(len(hex_line))
-
     hex_iter = iter(hex_line)
-    # test
     for x in hex_iter:
-        print(f'{x}{next(hex_iter)}')
+        # test
+        temp_byte = f'{x}{next(hex_iter)}'
+        print(temp_byte)
+        if
 
 
 def print_strings(file_obj, encoding, min_len): 
