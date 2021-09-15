@@ -93,7 +93,20 @@ def decode_le(file_obj, min_len):
 
 
 def decode_s(file_obj, min_len):
-    print('needs to be implemented')
+    all_lines = file_obj.readlines()
+    hex_line = ""
+    for line in all_lines:
+        line = line.hex()
+        hex_line += line
+    
+    # test
+    print(hex_line)
+    print(len(hex_line))
+
+    hex_iter = iter(hex_line)
+    # test
+    for x in hex_iter:
+        print(f'{x}{next(hex_iter)}')
 
 
 def print_strings(file_obj, encoding, min_len): 
