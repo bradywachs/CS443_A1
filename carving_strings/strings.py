@@ -163,7 +163,14 @@ def print_strings(file_obj, encoding, min_len):
         else:
             #FIXME: check > or >=
             if len(potential_str) >= min_len:
- 
+                print(potential_str)
+            # reset string
+            potential_str = ""
+    
+    # check for if string ends at EOF
+    if len(potential_str) >= min_len:
+        print(potential_str)
+
 
 def main(): 
     parser = argparse.ArgumentParser(description='Print the printable strings from a file.') 
