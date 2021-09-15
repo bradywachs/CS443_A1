@@ -1,7 +1,7 @@
 import argparse 
 import binascii
-import codecs
- 
+from codecs import ignore_errors
+import sys 
 
 """
 Idea for be vs le:
@@ -10,6 +10,10 @@ Idea for be vs le:
 - when using le - just reverse the order
 """
 
+"""
+decode('UTF-16-BE') or decode('UTF-16-LE')
+- double check these before using them 
+'"""
 
 
 def print_file(file_obj):
@@ -132,13 +136,33 @@ def decode_s(file_obj, min_len):
 
 def print_strings(file_obj, encoding, min_len): 
     if encoding == 's':
-        decode_s(file_obj, min_len)
+        bytes_to_read = 1
+        format = 'UTF-8'
     elif encoding == 'l':
-        decode_le(file_obj, min_len)
+        bytes_to_read = 2
+        format = 'UTF-16-LE'
     elif encoding == 'b':
-        decode_be(file_obj, min_len)
+        bytes_to_read = 2
+        format = 'UTF-16-BE'
     else:
         print('ERROR: Encoding not recognized')
+        sys.exit()
+
+    # string for ascii characters to make sure it is long enough
+    potential_str = ""
+    while(temp := file_obj.read(bytes_to_read)):
+        # FIXME: double check what ignore does
+        ascii = temp.decode(format, "ignore")
+        ascii_int = ord(ascii)
+        # test
+        # print(f'{ascii}\t{ascii_int}')
+
+        # ascii values between [U+20, U+7E]
+        if 32 <= ascii_int <= 126:
+            potential_str += ascii
+        else:
+            #FIXME: check > or >=
+            if len(potential_str) >= min_len:
  
 
 def main(): 
