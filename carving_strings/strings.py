@@ -31,6 +31,10 @@ def print_strings(file_obj, encoding, min_len):
     print(encoding) 
     print(min_len) 
     """
+    for chunk in iter(lambda: file_obj.read(16), b''):
+        hex_line = binascii.hexlify(chunk)
+        # hex_line = str(hex_line)
+        print(hex_line)
 
  
 def main(): 
