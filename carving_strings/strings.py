@@ -23,6 +23,7 @@ def print_utf16(file_obj):
     """for testing and troubleshooting
     *IMPORTANT: hexlify converts to 16-bit (2 byte, UTF-16) character type
     using hexlify makes binary string double length of original data
+    FIXME: is hexlify be or le
     """
     total_len = 0
     for chunk in iter(lambda: file_obj.read(16), b''):
@@ -30,6 +31,28 @@ def print_utf16(file_obj):
         # print(len(hex_line))
         total_len += len(hex_line)
         print(hex_line)
+        # print(hex_line[:3])
+    print(f'Total UTF-16 Encodings: {total_len}\t|\tCorresponding to {total_len/2} bytes')
+
+
+def compare_encoding(file_obj):
+    """for testing and troubleshooting
+    comparing other conversion techniques to binascii.hexlify()
+    FIXME: don't think I can pass a binary to format and cant convert normal string to hex
+    """
+    total_len = 0
+    test_len = 0
+    for chunk in iter(lambda: file_obj.read(16), b''):
+        hex_line = binascii.hexlify(chunk)
+        # clean_chunk = str(chunk)
+        # clean_chunk = clean_chunk.lstrip("b'")
+        # clean_chunk = clean_chunk.rstrip(" '")
+        test = '{:08x}'.format(chunk)
+        # print(len(hex_line))
+        total_len += len(hex_line)
+        test_len += len(test)
+        print(hex_line)
+        print(f'{test}\n')
         # print(hex_line[:3])
     print(f'Total UTF-16 Encodings: {total_len}\t|\tCorresponding to {total_len/2} bytes')
 
@@ -56,8 +79,14 @@ def print_utf8(file_obj, endian='be'):
 
 
 def decode_be(file_obj, min_len):
-    for chunk in iter(lambda: file_obj.read(16), b''):
-        hex_line = binascii.hexlify(chunk)
+    total_len = 0  # Fixme
+    all_lines = file_obj.readlines()
+    for line in all_lines:
+        utf16_line = binascii.hexlify(line)
+        total_len += len(utf16_line)
+        print(utf16_line)
+    # test
+    print(f'total len: {total_len}\t|\tCorresponding to {total_len/2} bytes')
 
 def decode_le(file_obj, min_len):
     print('needs to be implemented')
@@ -68,15 +97,6 @@ def decode_s(file_obj, min_len):
 
 
 def print_strings(file_obj, encoding, min_len): 
-    """
-    print(file_obj.name) 
-    print(encoding) 
-    print(min_len) 
-    """
-    # for chunk in iter(lambda: file_obj.read(16), b''):
-    #     hex_line = binascii.hexlify(chunk)
-    #     # hex_line = str(hex_line)
-    #     print(hex_line)
     if encoding == 's':
         decode_s(file_obj, min_len)
     elif encoding == 'l':
@@ -86,7 +106,7 @@ def print_strings(file_obj, encoding, min_len):
     else:
         print('ERROR: Encoding not recognized')
  
- 
+
 def main(): 
     parser = argparse.ArgumentParser(description='Print the printable strings from a file.') 
     parser.add_argument('filename') 
