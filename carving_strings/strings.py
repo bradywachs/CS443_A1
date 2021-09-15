@@ -1,13 +1,23 @@
 import argparse 
  
- 
+
+
+def print_file(file_obj):
+    """for testing & troubleshooting"""
+    lines = file_obj.readlines()
+    for line in lines:
+        print(line)
+
+
 def print_strings(file_obj, encoding, min_len): 
-    # Right now all this function does is print its arguments. 
-    # You'll need to replace that code with code that actually finds and prints the strings! 
+    """
     print(file_obj.name) 
     print(encoding) 
     print(min_len) 
- 
+    """
+    
+
+
  
 def main(): 
     parser = argparse.ArgumentParser(description='Print the printable strings from a file.') 
