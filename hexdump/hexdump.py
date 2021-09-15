@@ -19,6 +19,7 @@ def main():
             for chunk in iter(lambda: f.read(16), b''):
                 hex_line = binascii.hexlify(chunk)
                 hex_line = str(hex_line)
+                col2 = ""
                 col2 = " ".join(hex_line[i:i+2] for i in range(0, len(hex_line), 2))    # column2 is the byte values in hex
                 col2 = f'{col2[:26]} {col2[26:]}'                                       # add extra space inbetween 8th and 9th byte
                 col2 = col2.lstrip("'b'")
@@ -27,7 +28,7 @@ def main():
                 col3 = ""
                 for i in chunk:
                     # range of printable ascii characters [32,127] - range funct goes to stop - 1 value
-                    if i in range(32,128):
+                    if 32 <= i <= 127:
                         col3 += chr(i)
                     else:
                         col3 += (".")
