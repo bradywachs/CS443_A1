@@ -1,4 +1,5 @@
 import argparse 
+import binascii
  
 
 
@@ -9,14 +10,27 @@ def print_file(file_obj):
         print(line)
 
 
+def print_hex(file_obj):
+    """for testing and troubleshooting
+    FIXME: not getting the expected output
+    """
+    total_len = 0
+    for chunk in iter(lambda: file_obj.read(16), b''):
+        hex_line = binascii.hexlify(chunk)
+        hex_line = str(hex_line)
+        print(len(hex_line))
+        total_len += len(hex_line)
+        # test
+        print(hex_line)
+    print(f'Total Bytes: {total_len}')
+
+
 def print_strings(file_obj, encoding, min_len): 
     """
     print(file_obj.name) 
     print(encoding) 
     print(min_len) 
     """
-    
-
 
  
 def main(): 
